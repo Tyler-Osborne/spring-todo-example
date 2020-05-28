@@ -24,7 +24,7 @@ public class TodoController
     }
 
     @GetMapping("/{id}")
-    public Optional<Todo> getTodos(@PathVariable long id)
+    public Optional<Todo> getTodo(@PathVariable long id)
     {
         return todoRepository.findById(id);
     }
@@ -36,13 +36,13 @@ public class TodoController
         return todo;
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public Todo editTodo(@PathVariable long id, @RequestBody Todo todo)
     {
         Todo existingTodo = new Todo();
         try
         {
-            existingTodo = todoRepository.findById(id).orElseThrow();
+            existingTodo = todoRepository.findById(id).orElseThrow(NoSuchElementException::new);
             existingTodo.setTitle(todo.getTitle());
             existingTodo.setDescription(todo.getDescription());
             existingTodo.setComplete(todo.isComplete());
@@ -52,7 +52,6 @@ public class TodoController
             System.out.println(e.getMessage());
             existingTodo = todoRepository.save(todo);
         }
-
         return existingTodo;
     }
 
