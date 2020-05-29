@@ -6,49 +6,41 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("api/todos")
-public class TodoController
-{
+public class TodoController {
     private TodoRepository todoRepository;
 
-    public TodoController(TodoRepository todoRepository)
-    {
+    public TodoController(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
 
     @GetMapping
-    public List<Todo> getTodos()
-    {
+    public List<Todo> getTodos() {
         return todoRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Todo> getTodo(@PathVariable long id)
-    {
+    public Optional<Todo> getTodo(@PathVariable long id) {
         return todoRepository.findById(id);
     }
 
     @PostMapping
-    public Todo addTodo(@RequestBody Todo todo)
-    {
+    public Todo addTodo(@RequestBody Todo todo) {
         todoRepository.save(todo);
         return todo;
     }
 
     @PutMapping("/{id}")
-    public Todo editTodo(@PathVariable long id, @RequestBody Todo todo)
-    {
+    public Todo editTodo(@PathVariable long id, @RequestBody Todo todo) {
         Todo existingTodo = new Todo();
-        try
-        {
+        try {
             existingTodo = todoRepository.findById(id).orElseThrow(NoSuchElementException::new);
             existingTodo.setTitle(todo.getTitle());
             existingTodo.setDescription(todo.getDescription());
             existingTodo.setComplete(todo.isComplete());
-        }
-        catch (NoSuchElementException e)
-        {
+        } catch (NoSuchElementException e) {
             System.out.println(e.getMessage());
             existingTodo = todoRepository.save(todo);
         }
@@ -56,8 +48,7 @@ public class TodoController
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTodo(@PathVariable long id)
-    {
+    public void deleteTodo(@PathVariable long id) {
         todoRepository.deleteById(id);
     }
 }
