@@ -10,8 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Todo
-{
+public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,8 +18,7 @@ public class Todo
     private String description;
     private boolean complete;
 
-    public Todo(String title, String description, boolean complete)
-    {
+    public Todo(String title, String description, boolean complete) {
         this.title = title;
         this.description = description;
         this.complete = complete;
